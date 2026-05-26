@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  ray-head:
+    build: .
+    container_name: ray-head
+    command: >
+      sh -c "ray start --head --port=6379 --dashboard-host=0.0.0.0 &&
+             sleep 10 &&
+             python main.py"
+    ports:
+      - "8265:8265"
+      - "6379:6379"
+    volumes:
+      - .:/app
+
+  worker1:
+    build: .
+    container_name: ray-worker-1
+    depends_on:
+      - ray-head
+    command: ray start --address=ray-head:6379 --block
+    volumes:
+      - .:/app
+
+  worker2:
+    build: .
+    container_name: ray-worker-2
+    depends_on:
+      - ray-head
+    command: ray start --address=ray-head:6379 --block
+    volumes:
+      - .:/app
+
+  worker3:
+    build: .
+    container_name: ray-worker-3
+    depends_on:
+      - ray-head
+    command: ray start --address=ray-head:6379 --block
+    volumes:
+      - .:/app

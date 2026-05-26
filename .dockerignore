@@ -1,0 +1,26 @@
+# datasets
+data/
+
+# entorno virtual
+venv/
+data/venv/
+
+# python cache
+__pycache__/
+*/__pycache__/
+*.pyc
+*.pyo
+
+# mac
+.DS_Store
+
+# resultados locales
+resultados/
+
+# git
+.git
+.gitignore
+
+# archivos temporales
+*.log
+*.tmp
