@@ -84,7 +84,7 @@ def procesar_lote_archivos(rutas_lote, worker_id):
 
 def ejecutar_etl(num_workers=3):
     print("🚀 Iniciando procesamiento distribuido con Ray (Dashboard Completo)...")
-    rutas = glob.glob("data/parquet/atus_anual_*.parquet")
+    rutas = glob.glob("data/parquet_fixed/atus_anual_*.parquet")
 
     if not rutas:
         print("❌ No se encontraron archivos parquet.")
