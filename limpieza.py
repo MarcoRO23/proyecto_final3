@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def limpiar_datos(ruta):
     df = pd.read_parquet(ruta)
 
@@ -19,7 +20,7 @@ def limpiar_datos(ruta):
         "PEATHERIDO",
         "CICLHERIDO",
         "OTROHERIDO",
-        "NEHERIDO"
+        "NEHERIDO",
     ]
 
     for col in columnas_numericas:
@@ -27,24 +28,26 @@ def limpiar_datos(ruta):
 
     # Totales
     df["TOTAL_MUERTOS"] = (
-        df["CONDMUERTO"] +
-        df["PASAMUERTO"] +
-        df["PEATMUERTO"] +
-        df["CICLMUERTO"] +
-        df["OTROMUERTO"] +
-        df["NEMUERTO"]
+        df["CONDMUERTO"]
+        + df["PASAMUERTO"]
+        + df["PEATMUERTO"]
+        + df["CICLMUERTO"]
+        + df["OTROMUERTO"]
+        + df["NEMUERTO"]
     )
 
     df["TOTAL_HERIDOS"] = (
-        df["CONDHERIDO"] +
-        df["PASAHERIDO"] +
-        df["PEATHERIDO"] +
-        df["CICLHERIDO"] +
-        df["OTROHERIDO"] +
-        df["NEHERIDO"]
+        df["CONDHERIDO"]
+        + df["PASAHERIDO"]
+        + df["PEATHERIDO"]
+        + df["CICLHERIDO"]
+        + df["OTROHERIDO"]
+        + df["NEHERIDO"]
     )
 
     # Eliminar nulos SOLO EN COLUMNAS CRÍTICAS (no en todas)
-    df = df.dropna(subset=["ID_ENTIDAD", "ID_MUNICIPIO", "ANIO", "MES", "ID_HORA", "CAUSAACCI"])
+    df = df.dropna(
+        subset=["ID_ENTIDAD", "ID_MUNICIPIO", "ANIO", "MES", "ID_HORA", "CAUSAACCI"]
+    )
 
     return df
