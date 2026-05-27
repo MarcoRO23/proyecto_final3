@@ -2,12 +2,12 @@ services:
   ray-head:
     build: .
     container_name: ray-head
+    shm_size: "2gb"
     command: >
       sh -c "ray start --head --port=6379 --dashboard-host=0.0.0.0 &&
              sleep 10 &&
-             python main.py"
+             python etl_ray.py
     ports:
-      - "8265:8265"
       - "6379:6379"
     volumes:
       - .:/app
@@ -39,3 +39,13 @@ services:
     volumes:
       - .:/app
 
+  api-server:
+    build: .
+    container_name: api-fastapi
+    command: uvicorn api:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - ray-head

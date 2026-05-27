@@ -51,4 +51,3 @@ def limpiar_datos(ruta):
     )
 
     return df
-
