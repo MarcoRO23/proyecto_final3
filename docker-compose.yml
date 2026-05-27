@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   ray-head:
     build: .
@@ -40,3 +38,4 @@ services:
     command: ray start --address=ray-head:6379 --block
     volumes:
       - .:/app
+

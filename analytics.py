@@ -6,7 +6,7 @@ from workers import (
     procesar_victimas,
     procesar_horas,
     procesar_causas,
-    procesar_meses
+    procesar_meses,
 )
 
 
@@ -22,22 +22,27 @@ def _dividir_entidades(num_workers=3):
 def estados_mas_accidentes(df):
     """¿Qué estados concentran más accidentes? (DISTRIBUIDO EN 3 WORKERS)"""
     grupos = _dividir_entidades(3)
-    tareas = [procesar_entidades_estados.remote(df, grupo, i) for i, grupo in enumerate(grupos)]
+    tareas = [
+        procesar_entidades_estados.remote(df, grupo, i)
+        for i, grupo in enumerate(grupos)
+    ]
     resultados = ray.get(tareas)
-    
+
     combinado = {}
     for r in resultados:
         combinado.update(r["data"])
-    
+
     return sorted(combinado.items(), key=lambda x: x[1], reverse=True)
 
 
 def municipios_siniestralidad(df):
     """¿Qué municipios presentan mayor siniestralidad? (DISTRIBUIDO EN 3 WORKERS)"""
     grupos = _dividir_entidades(3)
-    tareas = [procesar_municipios.remote(df, grupo, i) for i, grupo in enumerate(grupos)]
+    tareas = [
+        procesar_municipios.remote(df, grupo, i) for i, grupo in enumerate(grupos)
+    ]
     resultados = ray.get(tareas)
-    
+
     datos = [item for r in resultados for item in r["data"]]
     df_temp = pd.DataFrame(datos)
     df_temp = df_temp.sort_values("total_accidentes", ascending=False)
@@ -69,7 +74,7 @@ def victimas_por_entidad(df):
     grupos = _dividir_entidades(3)
     tareas = [procesar_victimas.remote(df, grupo, i) for i, grupo in enumerate(grupos)]
     resultados = ray.get(tareas)
-    
+
     datos = [item for r in resultados for item in r["data"]]
     df_temp = pd.DataFrame(datos)
     df_temp = df_temp.sort_values("TOTAL_VICTIMAS", ascending=False)
